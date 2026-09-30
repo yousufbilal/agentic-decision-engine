@@ -164,6 +164,8 @@ def battle():
 
     while bulbasaur_health >= 0:
         print("bulbasaur_health health",bulbasaur_health)
+        print("TEST")
+
 
         
 
