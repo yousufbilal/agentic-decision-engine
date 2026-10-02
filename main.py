@@ -1,10 +1,11 @@
 from Monsters import pokemon
 
-print(" 1 charmander , 2 Squirtle , 3 Bulbasaur")
+# choosen = input()
 
-choose = input()
+def main():
+    pokemon.battle("charmander")
 
-pokemon.pokedex_func(choose)
+main()
 
 
 
