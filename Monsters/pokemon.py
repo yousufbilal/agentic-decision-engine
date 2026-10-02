@@ -1,4 +1,5 @@
 from Pokedex import pokedex_dictionary
+import random
 
 
 def pokemon_stat():
@@ -47,12 +48,18 @@ new_pokemon_stats = pokemon_stat()
 
 def battle(choosen):
 
+    pokemon_battle_decision = (random.randint(0, 1))
+    print(pokemon_battle_decision)
+
+
     if choosen == "charmander":
         print("Your chosen pokemon is:",new_pokemon_stats["charmander"])
         print()
         print("Your opponant pokemon is: ",new_pokemon_stats["squirtle"])
 
         squirtle_health = new_pokemon_stats["squirtle"]["health"]
+        charmander_health = new_pokemon_stats["charmander"]["health"]
+
 
         print("************  Pokemon battle started  **********")
 
@@ -62,25 +69,32 @@ def battle(choosen):
             user_input = input()
 
             if user_input == "1":
+                print()
                 squirtle_health = squirtle_health - new_pokemon_stats["charmander"]["attack"]
-                print(squirtle_health) 
+                print("*** opponant pokemon health ***",squirtle_health) 
+
+                if pokemon_battle_decision == 0:
+                    if squirtle_health <= 0:
+                         print(" *** battle ended opponant pokemon fainted ***")
+                         break
+                    print("*** opponant pokemon attacked ***")
+                    charmander_health = charmander_health - new_pokemon_stats["squirtle"]["attack"]
+                    print("My pokemon health",charmander_health) 
+                else:
+                    print("*** wild pokemon did no attack ***")
+
 
                 if squirtle_health <= 0:
-                    print("battle ended opponant pokemon fainted")
+                    print(" *** battle ended opponant pokemon fainted ***")
                     break
+                elif charmander_health <= 0:
+                    print(" *** battle ended you lost ***")
+                    break
+
             elif user_input == "2":
                 print("ran away safely")
                 break
 
-
-    # elif chosen == "squirtle":
-    #     print(new_pokemon_stats["squirtle"])
-
-    # elif chosen == "bulbasaur":
-    #     print(new_pokemon_stats["bulbasaur"])
-
-    # else:
-    #     print("pokemon not available")
 
 
 
