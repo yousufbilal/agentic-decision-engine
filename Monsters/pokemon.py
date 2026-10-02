@@ -230,7 +230,7 @@ def bulbasaur():
     return bulbasaur_stats
 
 def battle(chosen):
-    
+    print("test")
     charmander_stats = charmander()
     squirtle_stats = squirtle(charmander_stats)
 
