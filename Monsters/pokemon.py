@@ -47,10 +47,13 @@ def pokemon_stat():
 new_pokemon_stats = pokemon_stat()
 
 # def pokemon_move_stat(my_atk,opponent_dfn):
-def pokemon_move_stat(choosen,opponent_poke):
+def my_pokemon_move_stat(choosen,opponent_poke):
     level = 5
     my_atk = new_pokemon_stats[choosen]["attack"]
+    print()
     print("choose a move \n 1 tacke \n 2 ember \n 3 dragon breath \n 4 slash")
+    print()
+    
     pokemon_move_set = pokedex_dictionary.pokedex[choosen]["moves"]
 
     move_attack = 0
@@ -80,6 +83,42 @@ def pokemon_move_stat(choosen,opponent_poke):
 
     return damage
 
+def opponent_pokemon_move_stat(opponent_pokemon):
+
+    level = 5
+    my_atk = new_pokemon_stats["squirtle"]["attack"]
+    print()
+    print("choose a move \n 1 tacke \n 2 water_gun \n 3 bubble_beam breath \n 4 aqua_jet")
+    print()
+    pokemon_move_set = pokedex_dictionary.pokedex["squirtle"]["moves"]
+
+    pokemon_battle_decision = (random.randint(0, 4))
+
+    move_attack = 0
+
+    if pokemon_battle_decision == 1:
+        move_attack = pokemon_move_set["tackle"]["power"]
+
+    elif pokemon_battle_decision == 2:
+        move_attack = pokemon_move_set["water_gun"]["power"]
+
+    elif pokemon_battle_decision == 3:
+        move_attack = pokemon_move_set["bubble_beam"]["power"]
+
+    elif pokemon_battle_decision == 4:
+        move_attack = pokemon_move_set["aqua_jet"]["power"]
+
+    else:
+        print("move not available")
+
+    opponent_pokemon_defense = opponent_pokemon["defense"]
+
+    damage = ((((2 * level) // 5 + 2) * move_attack * my_atk // opponent_pokemon_defense) // 50) + 2
+
+    print("Damage to charmander:",damage)
+
+    return damage
+
 
 
 
@@ -89,11 +128,9 @@ def pokemon_move_stat(choosen,opponent_poke):
 
 def battle(choosen):
 
-    pokemon_battle_decision = (random.randint(0, 1))
 
     print("************  Pokemon battle started  **********")
     print()
-
 
     if choosen == "charmander":
         print("Your chosen pokemon is:",new_pokemon_stats["charmander"]["pokemon_name"], "Health:",new_pokemon_stats["charmander"]["health"])
@@ -101,6 +138,7 @@ def battle(choosen):
         print("Your opponant pokemon is:",new_pokemon_stats["squirtle"]["pokemon_name"], "Health:", new_pokemon_stats["squirtle"]["health"])
         print()
 
+        my_pokemon = new_pokemon_stats["charmander"]
         opponent_poke = new_pokemon_stats["squirtle"]
         squirtle_health = new_pokemon_stats["squirtle"]["health"]
         charmander_health = new_pokemon_stats["charmander"]["health"]
@@ -111,12 +149,24 @@ def battle(choosen):
 
         while squirtle_health > 0:
 
+            pokemon_battle_decision = (random.randint(0, 1))
+
             if user_input == "1":
-                chosen_pokemon_moves =  pokemon_move_stat(choosen,opponent_poke)
+                chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
+                opponent_pokemon_moves = opponent_pokemon_move_stat(my_pokemon)
                 squirtle_health = squirtle_health - chosen_pokemon_moves
                 print()
                 print("Squirtle Health",squirtle_health)
                 print()
+                
+                if pokemon_battle_decision == 0:
+                    print("wild pokemon attacked")
+
+                    charmander_health = charmander_health - opponent_pokemon_moves
+                    print("Charmander Health", charmander_health)
+                    
+                else:
+                    print("wild pokemon did not attack")
 
             if squirtle_health <= 0:
                 print()
