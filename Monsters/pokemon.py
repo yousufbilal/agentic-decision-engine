@@ -1,263 +1,171 @@
-pokedex = {
-    "charmander" : {
-        "Type": ["fire"],
-        "HP": 39,
-        "Attack": 52,
-        "Defense": 43,
-        "Special_Atk": 60,
-        "Special_Def": 50,
-        "Speed": 65,
-        "Pokedex entries" : "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail.",
-        "moves":{
-            "tackle": 40
-        }
-    },
+from Pokedex import pokedex_dictionary
+import random
 
-    "squirtle" : {
-        "Type": ["water"],
-        "HP": 44,
-        "Attack": 48,
-        "Defense": 65,
-        "Special_Atk": 50,
-        "Special_Def": 64,
-        "Speed": 43,
-        "Pokedex entries" : "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth.",
-        "moves":{
-            "tackle": 40
-        }
-    },
 
-    "bulbasaur" : {
-        "Type": ["grass", "poison"],
-        "HP": 45,
-        "Attack": 49,
-        "Defense": 49,
-        "Special_Atk": 65,
-        "Special_Def": 65,
-        "Speed": 45,
-        "Pokedex entries" : "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.",
-        "moves":{
-            "tackle": 40
-        }
-    }
-}    
+def pokemon_stat():
 
-def charmander():
-    base_health = pokedex["charmander"]["HP"]
-    base_attack = pokedex["charmander"]["Attack"]
-    base_defense = pokedex["charmander"]["Defense"]
-    base_special_Atk = pokedex["charmander"]["Special_Atk"]
-    base_special_Def = pokedex["charmander"]["Special_Def"]
-    base_speed = pokedex["charmander"]["Speed"]
+    pokedex = pokedex_dictionary.pokedex
+
+    new_pokedex= {}
+
+    for pokemon_names in pokedex:
+        pokemon_name = pokemon_names
+        base_health = pokedex[pokemon_names]["HP"]
+        base_attack = pokedex[pokemon_names]["Attack"]
+        base_defense = pokedex[pokemon_names]["Defense"]
+        base_special_Atk = pokedex[pokemon_names]["Special_Atk"]
+        base_special_Def = pokedex[pokemon_names]["Special_Def"]
+        base_speed = pokedex[pokemon_names]["Speed"]
+        base_move = pokedex[pokemon_names]["moves"]
+
+        level = 5
+        
+        health = int(((2 * base_health * level)/100 ) + level + 10)  # 18 charmancher , 19 squirtle , 19 bulbasaur  
+        attack = int(((2 * base_attack * level)/100 ) + 5)  # 10 charmancher , 9 squirtle , 9 bulbasaur  
+        defense = int(((2 * base_defense * level)/100 ) + 5) 
+        special_atk = int(((2 * base_special_Atk * level)/100 ) + 5) 
+        special_def = int(((2 * base_special_Def * level)/100 ) + 5) 
+        speed = int(((2 * base_speed * level)/100 ) + 5) 
+
+        new_pokedex[pokemon_name] = {
+            "pokemon_name":pokemon_name,
+            "health":health,
+            "attack":attack,
+            "defense":defense,
+            "special_atk":special_atk,
+            "special_def":special_def,
+            "speed":speed,
+            "level":level,
+            "moves":base_move
+            }
+
+    return new_pokedex
+
+
+new_pokemon_stats = pokemon_stat()
+
+def my_pokemon_move_stat(choosen,opponent_poke):
+
+    base_atk_stat = new_pokemon_stats[choosen]["attack"]
+    pokemon_move_set = pokedex_dictionary.pokedex[choosen]["moves"]
+
     level = 5
+    increment = 0
+    move_dict = {}
+    print()
+    print(f"My Pokemon {choosen} Moves")
+    for key,value in pokemon_move_set.items():
+        increment = increment+1
+        print(f"{key} {value}")
+        move_dict[increment] = value["power"]
+
+    user_input = float(input())
+    moveset_selection  = move_dict[user_input]
+
+    opponent_pokemon_defense = opponent_poke["defense"]
+
+    damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // opponent_pokemon_defense) // 50) + 2
+
+    print("Damage to my",choosen,damage)
+
+    return damage
+
+
+
+def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
+
+    level = 5
+    base_atk_stat = new_pokemon_stats[random_pokemon_selected]["attack"]
+
+    pokemon_move_set = pokedex_dictionary.pokedex[random_pokemon_selected]["moves"]
+
+    level = 5
+    increment = 0
+    move_dict = {}
+    opponent_pokemon_selected_move =[]
+
+    print()
+    print(f"Opponant pokemon {random_pokemon_selected} Moves")
+    for key,value in pokemon_move_set.items():
+        increment = increment+1
+        print(f"{key} {value}")
+        move_dict[increment] = value["power"]
+        opponent_pokemon_selected_move = {key : value["power"]}
+
+
+    pokemon_battle_decision = (random.randint(1, 4))
+
+    moveset_selection  = move_dict[pokemon_battle_decision]
+
+    # print(f"OPPONANT POKEMON USED",opponent_pokemon_selected_move)
+
+    player_pokemon_defense = player_pokemon["defense"]
+
+    damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // player_pokemon_defense) // 50) + 2
+
+    print()
+    print("Opponant Pokemon",random_pokemon_selected,"used Attack", opponent_pokemon_selected_move, "does damage",damage)
+    # print("Wild",random_pokemon_selected["pokemon_name"], "used",opponent_pokemon_selected_move)
+    print("Damage to",player_pokemon["pokemon_name"],damage)
+
+    return damage
+
+
+
+def battle(choosen):
+    pokedex_list = new_pokemon_stats.keys()
+    random_pokemon_selected = random.choice(list(pokedex_list))
+
+
+    print()
+    print("************  Pokemon battle started  **********")
+    print()
+    print("Your chosen pokemon is:",new_pokemon_stats[choosen]["pokemon_name"], "Health:",new_pokemon_stats[choosen]["health"])
+    print()
+    print("Your opponant pokemon is:",new_pokemon_stats[random_pokemon_selected]["pokemon_name"], "Health:", new_pokemon_stats[random_pokemon_selected]["health"])
+
+    my_pokemon = new_pokemon_stats[choosen]
+    opponent_poke = new_pokemon_stats[random_pokemon_selected]
+    opponnat_pokemon_health = new_pokemon_stats[random_pokemon_selected]["health"]
+    chosen_pokemon_health = new_pokemon_stats[choosen]["health"]
+
+    print("press 1 to battle\npress 2 to run")
+    print()
+    user_input = input()
+
+    while opponnat_pokemon_health > 0:
+
+        pokemon_battle_decision = (random.randint(0, 1))
+
+        if user_input == "1":
+            chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
+            opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
+            opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
+            print()
+            print(f"{random_pokemon_selected} Health,{opponnat_pokemon_health}")
+            print()
     
-    # Moves
-    base_tackle =  pokedex["charmander"]["moves"]["tackle"]
+            if pokemon_battle_decision == 0:
+                print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
 
-    health = int(((2 * base_health * level)/100 ) + level + 10)
-    attack = int(((2 * base_attack * level)/100 ) + 5) 
-    defense = int(((2 * base_defense * level)/100 ) + 5) 
-    special_atk = int(((2 * base_special_Atk * level)/100 ) + 5) 
-    special_def = int(((2 * base_special_Def * level)/100 ) + 5) 
-    speed = int(((2 * base_speed * level)/100 ) + 5) 
-    # Moves
-    tackle = int(((((2*level/5)+2) * base_tackle * attack)/(50 * defense))+2)
+                chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
+                print(f'{choosen} Health: {chosen_pokemon_health}')
+        
+            else:
+                print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
 
-    charmander_stats = {
-        "health": health,
-        "attack":attack,
-        "defense":defense,
-        "special_atk":special_atk,
-        "special_def":special_def,
-        "speed":speed,
-        "Moves": {
-            "tackle":tackle
-        }
-    }
+        if opponnat_pokemon_health <= 0:
+            print()
+            print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
+            print()
+            break
 
-    print("charmander stats:", charmander_stats)
-    # print("health: ", health)
-    # print("attack: ", attack)
-    # print("defense: ", defense)
-    # print("special_atk: ", special_atk)
-    # print("special_def: ", special_def)
-    # print("speed: ", speed)
-    # print("tackle: ", tackle)
+        elif chosen_pokemon_health <= 0:
+            print()
+            print(f' *** battle ended {choosen} fainted ***')
+            print()
+            break
 
-    print("""
-          ▄████▄
-        █▀█████▀██
-        ███▀  ▀███
-        ███ ▄▄ ███
-         ████████
-         ▄██████▄      *
-        ██████████    /|\\
-       ████████████  ▄███
-       ████████████   ▀█▄
-       ████████████    ▀█▄
-        ████  ████▀▀▀▀▀▀██
-         ▀▀    ▀▀ 
-""")
-
-    return charmander_stats
-
-# charmander()
-
-
-
-def squirtle(opoonant_stat):
-    # print("opponant_pokemon_stats",opoonant_stat["defense"])
-    opponant_defense = opoonant_stat["defense"]
-    base_health = pokedex["squirtle"]["HP"]
-    base_attack = pokedex["squirtle"]["Attack"]
-    base_defense = pokedex["squirtle"]["Defense"]
-    base_special_Atk = pokedex["squirtle"]["Special_Atk"]
-    base_special_Def = pokedex["squirtle"]["Special_Def"]
-    base_speed = pokedex["squirtle"]["Speed"]
-    level = 5
-
-    # Moves
-    base_tackle =  pokedex["squirtle"]["moves"]["tackle"]
-
-    health = int(((2 * base_health * level)/100 ) + level + 10)
-    attack = int(((2 * base_attack * level)/100 ) + 5) 
-    defense = int(((2 * base_defense * level)/100 ) + 5) 
-    special_atk = int(((2 * base_special_Atk * level)/100 ) + 5) 
-    special_def = int(((2 * base_special_Def * level)/100 ) + 5) 
-    speed = int(((2 * base_speed * level)/100 ) + 5) 
-    # Moves
-    tackle = int(((((2*level/5)+2) * base_tackle * attack)/(50 * opponant_defense))+2)
-
-    squirtle_stats = {
-        "health": health,
-        "attack":attack,
-        "defense":defense,
-        "special_atk":special_atk,
-        "special_def":special_def,
-        "speed":speed,
-        "Moves": {
-            "tackle":tackle
-        }
-    }
-
-    print("squirtle_stats",squirtle_stats)
-    # print("health: ", health)
-    # print("attack: ", attack)
-    # print("defense: ", defense)
-    # print("special_atk: ", special_atk)
-    # print("special_def: ", special_def)
-    # print("speed: ", speed)
-    # print("tackle: ", tackle)
-
-    print("""
-          ▄████▄
-        █▀█████▀██
-        ███▀  ▀███
-        ███ ▄▄ ███
-         ▀██████▀
-       ▄██████████▄
-      ██████████████
-      ██████████████
-     ▄██████████████▄  ▄▄
-    █████████████████████
-     ▀██████████████▀ ▀▀
-        ████  ████
-        ▀▀▀▀  ▀▀▀▀
-""")
-
-    return squirtle_stats
-
-
-
-
-def bulbasaur():
-    base_health = pokedex["bulbasaur"]["HP"]
-    base_attack = pokedex["bulbasaur"]["Attack"]
-    base_defense = pokedex["bulbasaur"]["Defense"]
-    base_special_Atk = pokedex["bulbasaur"]["Special_Atk"]
-    base_special_Def = pokedex["bulbasaur"]["Special_Def"]
-    base_speed = pokedex["bulbasaur"]["Speed"]
-    level = 5
-
-    # Moves
-    base_tackle =  pokedex["bulbasaur"]["moves"]["tackle"]
-
-    health = int(((2 * base_health * level)/100 ) + level + 10)
-    attack = int(((2 * base_attack * level)/100 ) + 5) 
-    defense = int(((2 * base_defense * level)/100 ) + 5) 
-    special_atk = int(((2 * base_special_Atk * level)/100 ) + 5) 
-    special_def = int(((2 * base_special_Def * level)/100 ) + 5) 
-    speed = int(((2 * base_speed * level)/100 ) + 5) 
-    # Moves
-    tackle = int(((((2*level/5)+2) * base_tackle * attack)/(50 * defense))+2)
-
-    bulbasaur_stats = {
-        "health": health,
-        "attack":attack,
-        "defense":defense,
-        "special_atk":special_atk,
-        "special_def":special_def,
-        "speed":speed,
-        "Moves": {
-            "tackle":tackle
-        }
-    }
-
-    print("bulbasaur_stats")
-    # print("health: ", health)
-    # print("attack: ", attack)
-    # print("defense: ", defense)
-    # print("special_atk: ", special_atk)
-    # print("special_def: ", special_def)
-    # print("speed: ", speed)
-    # print("tackle: ", tackle)
-    print("""
-            ▄█▄
-          ▄█████▄
-        ▄█████████▄
-   ▄▄  █████████████  ▄▄
-  ███████████████████████
-  █████▀  ▀█████▀  ▀█████
-  █████ ▄▄ █████ ▄▄ █████
-  ▀█████████████████████▀
-    ▀████  ▄▄▄▄  ████▀
-   ▄██████████████████▄
-  █████▀██████████▀█████
-  ████  ████  ████  ████
-   ▀▀    ▀▀    ▀▀    ▀▀
-""")
-
-    return bulbasaur_stats
-
-def battle(chosen):
-    
-    charmander_stats = charmander()
-    squirtle_stats = squirtle(charmander_stats)
-
-
-
-    pokemon_health = squirtle_stats["health"] 
-    pokemon_attack = charmander_stats["Moves"]["tackle"]
-
-
-
-
-    # while pokemon_health > 0 :
-
-    #     userinput = input()
-
-    #     if userinput == "attack":
-    #         pokemon_health = pokemon_health - pokemon_attack
-    #         print(pokemon_health)
-            
-    #         if pokemon_health < 0:
-    #             print("opponant pokemond died")
-
-    #     elif userinput == "quit":
-    #         print("battle over")
-    #         break
-
-
-  
-
-
+        elif user_input == "2":
+            print("you ran away")
+            break

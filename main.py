@@ -1,9 +1,11 @@
 from Monsters import pokemon
 
+
 # choosen = input()
 
+
 def main():
-    pokemon.battle("charmander")
+    pokemon.battle("bulbasaur")
 
 main()
 
