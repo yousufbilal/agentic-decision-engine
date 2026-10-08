@@ -5,7 +5,7 @@ from Monsters import pokemon
 
 
 def main():
-    pokemon.battle("charmander")
+    pokemon.battle("bulbasaur")
 
 main()
 

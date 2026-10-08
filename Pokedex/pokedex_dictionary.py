@@ -11,7 +11,7 @@ pokedex = {
         "moves": {
             "tackle":{"type":"normal", "power":40, "accuracy":100 },
             "ember":{"type":"fire", "power":40, "accuracy":100 },
-            "dragon_breath":{"type":"dragon", "power":100, "accuracy":75 },
+            "fire_fang":{"type":"fire", "power":65, "accuracy":95 },
             "slash":{"type":"normal", "power":70, "accuracy":100 },
         }
     },
@@ -34,7 +34,7 @@ pokedex = {
     },
 
     "bulbasaur" : {
-        "Type": ["grass", "poison"],
+        "Type": ["grass"],
         "HP": 45,
         "Attack": 49,
         "Defense": 49,
@@ -43,10 +43,10 @@ pokedex = {
         "Speed": 45,
         "Pokedex entries" : "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "tackle":{"type":"normal", "power":40, "accuracy":100 },
+            "vine_whip":{"type":"grass", "power":45, "accuracy":100 },
+            "razor_leaf":{"type":"grass", "power":55, "accuracy":95 },
+            "solar_beam":{"type":"grass", "power":120, "accuracy":100 },
         }
     },
 
@@ -60,15 +60,15 @@ pokedex = {
         "Speed": 30,
         "Pokedex entries" : "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "body_slam":{"type":"normal", "power":85, "accuracy":100 },
+            "hyper_beam":{"type":"normal", "power":150, "accuracy":90 },
+            "earthquake":{"type":"ground", "power":100, "accuracy":100 },
+            "double_edge":{"type":"normal", "power":120, "accuracy":100 },
         }
     },
 
     "mewtwo" : {
-        "Type": ["psychic"],
+        "Type": ["normal"],
         "HP": 106,
         "Attack": 110,
         "Defense": 90,
@@ -77,15 +77,15 @@ pokedex = {
         "Speed": 130,
         "Pokedex entries" : "It was created by a scientist after years of horrific gene splicing and DNA engineering experiments.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "swift":{"type":"normal", "power":60, "accuracy":100 },
+            "hyper_beam":{"type":"normal", "power":150, "accuracy":90 },
+            "thunderbolt":{"type":"electric", "power":90, "accuracy":100 },
+            "flamethrower":{"type":"fire", "power":90, "accuracy":100 },
         }
     },
 
     "gengar" : {
-        "Type": ["ghost", "poison"],
+        "Type": ["normal"],
         "HP": 60,
         "Attack": 65,
         "Defense": 60,
@@ -94,15 +94,15 @@ pokedex = {
         "Speed": 110,
         "Pokedex entries" : "Under a full moon, this POKéMON likes to mimic the shadows of people and laugh at their fright.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "thunderbolt":{"type":"electric", "power":90, "accuracy":100 },
+            "mud_bomb":{"type":"ground", "power":65, "accuracy":85 },
+            "hyper_voice":{"type":"normal", "power":90, "accuracy":100 },
+            "energy_ball":{"type":"grass", "power":90, "accuracy":100 },
         }
     },
 
     "dragonite" : {
-        "Type": ["dragon", "flying"],
+        "Type": ["normal"],
         "HP": 91,
         "Attack": 134,
         "Defense": 95,
@@ -111,15 +111,15 @@ pokedex = {
         "Speed": 80,
         "Pokedex entries" : "An extremely rarely seen marine POKéMON. Its intelligence is said to match that of humans.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "extreme_speed":{"type":"normal", "power":80, "accuracy":100 },
+            "earthquake":{"type":"ground", "power":100, "accuracy":100 },
+            "fire_punch":{"type":"fire", "power":75, "accuracy":100 },
+            "thunder_punch":{"type":"electric", "power":75, "accuracy":100 },
         }
     },
 
     "mew" : {
-        "Type": ["psychic"],
+        "Type": ["normal"],
         "HP": 100,
         "Attack": 100,
         "Defense": 100,
@@ -128,15 +128,15 @@ pokedex = {
         "Speed": 100,
         "Pokedex entries" : "So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "swift":{"type":"normal", "power":60, "accuracy":100 },
+            "flamethrower":{"type":"fire", "power":90, "accuracy":100 },
+            "thunderbolt":{"type":"electric", "power":90, "accuracy":100 },
+            "earth_power":{"type":"ground", "power":90, "accuracy":100 },
         }
     },
 
     "lugia" : {
-        "Type": ["psychic", "flying"],
+        "Type": ["normal"],
         "HP": 106,
         "Attack": 90,
         "Defense": 130,
@@ -145,10 +145,10 @@ pokedex = {
         "Speed": 110,
         "Pokedex entries" : "It is said that it quietly spends its time deep at the bottom of the sea because its powers are too strong.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "aeroblast":{"type":"normal", "power":100, "accuracy":95 },
+            "hydro_pump":{"type":"water", "power":110, "accuracy":80 },
+            "hyper_beam":{"type":"normal", "power":150, "accuracy":90 },
+            "ancient_power":{"type":"normal", "power":60, "accuracy":100 },
         }
     },
 
@@ -162,11 +162,11 @@ pokedex = {
         "Speed": 85,
         "Pokedex entries" : "Said to be the reincarnation of north winds, it can instantly purify filthy, murky water.",
         "moves": {
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
-            "tackle":{"type":"", "power":0, "accuracy":0 },
+            "surf":{"type":"water", "power":90, "accuracy":100 },
+            "hydro_pump":{"type":"water", "power":110, "accuracy":80 },
+            "bubble_beam":{"type":"water", "power":65, "accuracy":100 },
+            "water_pulse":{"type":"water", "power":60, "accuracy":100 },
         }
     },
-    
-}    
+
+}
