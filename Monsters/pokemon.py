@@ -18,7 +18,6 @@ def pokemon_stat():
         base_speed = pokedex[pokemon_names]["Speed"]
         base_move = pokedex[pokemon_names]["moves"]
 
-
         level = 5
         
         health = int(((2 * base_health * level)/100 ) + level + 10)  # 18 charmancher , 19 squirtle , 19 bulbasaur  
@@ -43,53 +42,41 @@ def pokemon_stat():
     return new_pokedex
 
 
-
 new_pokemon_stats = pokemon_stat()
 
-# def pokemon_move_stat(my_atk,opponent_dfn):
 def my_pokemon_move_stat(choosen,opponent_poke):
-    level = 5
-    my_atk = new_pokemon_stats[choosen]["attack"]
-    print()
-    print("choose a move \n 1 tacke \n 2 ember \n 3 dragon breath \n 4 slash")
-    print()
-    
+
+    base_atk_stat = new_pokemon_stats[choosen]["attack"]
     pokemon_move_set = pokedex_dictionary.pokedex[choosen]["moves"]
 
-    move_attack = 0
+    level = 5
+    increment = 0
+    move_dict = {}
+    
+    print("Moves")
+    for key,value in pokemon_move_set.items():
+        increment = increment+1
+        print(f"{key} {value}")
+        move_dict[increment] = value["power"]
 
     user_input = float(input())
-
-    if user_input == 1:
-        move_attack = pokemon_move_set["tackle"]["power"]
-
-    elif user_input == 2:
-        move_attack = pokemon_move_set["ember"]["power"]
-
-    elif user_input == 3:
-        move_attack = pokemon_move_set["dragon_breath"]["power"]
-
-    elif user_input == 4:
-        move_attack = pokemon_move_set["slash"]["power"]
-
-    else:
-        print("move not available")
+    moveset_selection  = move_dict[user_input]
 
     opponent_pokemon_defense = opponent_poke["defense"]
 
-    damage = ((((2 * level) // 5 + 2) * move_attack * my_atk // opponent_pokemon_defense) // 50) + 2
-
-    print("Damage:",damage)
+    damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // opponent_pokemon_defense) // 50) + 2
 
     return damage
+
+
 
 def opponent_pokemon_move_stat(opponent_pokemon):
 
     level = 5
     my_atk = new_pokemon_stats["squirtle"]["attack"]
-    print()
-    print("choose a move \n 1 tacke \n 2 water_gun \n 3 bubble_beam breath \n 4 aqua_jet")
-    print()
+    # print()
+    # print("choose a move \n 1 tacke \n 2 water_gun \n 3 bubble_beam breath \n 4 aqua_jet")
+    # print()
     pokemon_move_set = pokedex_dictionary.pokedex["squirtle"]["moves"]
 
     pokemon_battle_decision = (random.randint(0, 4))
@@ -123,9 +110,6 @@ def opponent_pokemon_move_stat(opponent_pokemon):
 
 
 
-
-
-
 def battle(choosen):
 
 
@@ -133,15 +117,15 @@ def battle(choosen):
     print()
 
     if choosen == "charmander":
-        print("Your chosen pokemon is:",new_pokemon_stats["charmander"]["pokemon_name"], "Health:",new_pokemon_stats["charmander"]["health"])
+        print("Your chosen pokemon is:",new_pokemon_stats[choosen]["pokemon_name"], "Health:",new_pokemon_stats[choosen]["health"])
         print()
         print("Your opponant pokemon is:",new_pokemon_stats["squirtle"]["pokemon_name"], "Health:", new_pokemon_stats["squirtle"]["health"])
         print()
 
-        my_pokemon = new_pokemon_stats["charmander"]
+        my_pokemon = new_pokemon_stats[choosen]
         opponent_poke = new_pokemon_stats["squirtle"]
         squirtle_health = new_pokemon_stats["squirtle"]["health"]
-        charmander_health = new_pokemon_stats["charmander"]["health"]
+        charmander_health = new_pokemon_stats[choosen]["health"]
 
         print("press 1 to battle\npress 2 to run")
         print()
@@ -163,7 +147,7 @@ def battle(choosen):
                     print("wild pokemon attacked")
 
                     charmander_health = charmander_health - opponent_pokemon_moves
-                    print("Charmander Health", charmander_health)
+                    print(f'{choosen} Health: {charmander_health}')
                     
                 else:
                     print("wild pokemon did not attack")
@@ -172,16 +156,17 @@ def battle(choosen):
                 print()
                 print(" *** battle ended opponant pokemon fainted ***")
                 print()
-
                 break
+
             elif charmander_health <= 0:
                 print()
-                print(" *** battle ended you lost ***")
+                print(f' *** battle ended {choosen} fainted ***')
                 print()
                 break
 
-            elif user_input == 2:
+            elif user_input == "2":
                 print("you ran away")
+                break
 
 
 
