@@ -58,17 +58,25 @@ def my_pokemon_move_stat(choosen,opponent_poke):
         print(f"{increment}:{key} {value}")
         move_dict[increment] = value["power"]
 
-    user_input = float(input())
+    user_input = float(input("choose your move: "))
 
-    moveset_selection  = move_dict[user_input]
+    while user_input < 1 or user_input > 4 :
+        print("Wrong move chosen try again")
+        user_input = float(input("choose your move: "))
 
-    opponent_pokemon_defense = opponent_poke["defense"]
+    if user_input > 1 or user_input <= 4:
 
-    damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // opponent_pokemon_defense) // 50) + 2
+        moveset_selection  = move_dict[user_input]
 
-    print("Damage to my",choosen,damage)
+        opponent_pokemon_defense = opponent_poke["defense"]
 
-    return damage
+        damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // opponent_pokemon_defense) // 50) + 2
+
+        print("Damage to my",choosen,damage)
+
+        return damage
+        
+
 
 
 
