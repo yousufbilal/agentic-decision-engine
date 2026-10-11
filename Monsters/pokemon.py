@@ -60,6 +60,7 @@ def my_pokemon_move_stat(choosen,opponent_poke):
         move_dict[increment] = value["power"]
 
     user_input = float(input())
+    
     moveset_selection  = move_dict[user_input]
 
     opponent_pokemon_defense = opponent_poke["defense"]
@@ -82,7 +83,7 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
     level = 5
     increment = 0
     move_dict = {}
-    opponent_pokemon_selected_move =[]
+    opponent_pokemon_selected = {}
 
     print()
     print(f"Opponant pokemon {random_pokemon_selected} Moves")
@@ -90,14 +91,13 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
         increment = increment+1
         print(f"{key} {value}")
         move_dict[increment] = value["power"]
-        opponent_pokemon_selected_move = {key : value["power"]}
+        opponent_pokemon_selected[increment] = {key : value["power"]}
 
 
     pokemon_battle_decision = (random.randint(1, 4))
 
     moveset_selection  = move_dict[pokemon_battle_decision]
-
-    # print(f"OPPONANT POKEMON USED",opponent_pokemon_selected_move)
+    opponent_pokemon_selected_move = opponent_pokemon_selected[pokemon_battle_decision]
 
     player_pokemon_defense = player_pokemon["defense"]
 
@@ -169,3 +169,6 @@ def battle(choosen):
         elif user_input == "2":
             print("you ran away")
             break
+        
+        else:
+            "wrong input try again"
