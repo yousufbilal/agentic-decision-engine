@@ -1,7 +1,6 @@
 from Pokedex import pokedex_dictionary
 import random
 
-
 def pokemon_stat():
 
     pokedex = pokedex_dictionary.pokedex
@@ -56,11 +55,11 @@ def my_pokemon_move_stat(choosen,opponent_poke):
     print(f"My Pokemon {choosen} Moves")
     for key,value in pokemon_move_set.items():
         increment = increment+1
-        print(f"{key} {value}")
+        print(f"{increment}:{key} {value}")
         move_dict[increment] = value["power"]
 
     user_input = float(input())
-    
+
     moveset_selection  = move_dict[user_input]
 
     opponent_pokemon_defense = opponent_poke["defense"]
@@ -111,11 +110,9 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
     return damage
 
 
-
 def battle(choosen):
     pokedex_list = new_pokemon_stats.keys()
     random_pokemon_selected = random.choice(list(pokedex_list))
-
 
     print()
     print("************  Pokemon battle started  **********")
@@ -132,6 +129,15 @@ def battle(choosen):
     print("press 1 to battle\npress 2 to run")
     print()
     user_input = input()
+
+
+    while not user_input == "1" and not user_input == "2":
+        print("try again option not available")
+        print("press 1 to battle\npress 2 to run")
+        user_input = input()
+        if user_input == "1" or user_input == "2":
+            break
+
 
     while opponnat_pokemon_health > 0:
 
@@ -169,6 +175,4 @@ def battle(choosen):
         elif user_input == "2":
             print("you ran away")
             break
-        
-        else:
-            "wrong input try again"
+
