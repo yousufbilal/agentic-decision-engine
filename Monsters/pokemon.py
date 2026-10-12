@@ -1,4 +1,5 @@
 from Pokedex import pokedex_dictionary
+from Pokedex import type_advantages
 import random
 
 def pokemon_stat():
@@ -16,6 +17,7 @@ def pokemon_stat():
         base_special_Def = pokedex[pokemon_names]["Special_Def"]
         base_speed = pokedex[pokemon_names]["Speed"]
         base_move = pokedex[pokemon_names]["moves"]
+        pokemon_type = pokedex[pokemon_names]["Type"]
 
         level = 5
         
@@ -35,7 +37,8 @@ def pokemon_stat():
             "special_def":special_def,
             "speed":speed,
             "level":level,
-            "moves":base_move
+            "moves":base_move,
+            "type":pokemon_type
             }
 
     return new_pokedex
@@ -52,6 +55,7 @@ def my_pokemon_move_stat(choosen,opponent_poke):
     increment = 0
     move_dict = {}
     move_name_dict = {}
+    move_type = {}
     print()
     print(f"My Pokemon {choosen} Moves")
     for key,value in pokemon_move_set.items():
@@ -59,7 +63,6 @@ def my_pokemon_move_stat(choosen,opponent_poke):
         move_accuracy = value["accuracy"]
 
         increment = increment+1
-        # print(f"{increment} {key} type:{move_type} accuracy:{move_accuracy}")
         print(f"{increment} {key} ")
 
         move_dict[increment] = value["power"]
@@ -72,7 +75,11 @@ def my_pokemon_move_stat(choosen,opponent_poke):
         user_input = float(input("choose your move: "))
 
     moveset_selection  = move_dict[user_input]
+
+    used_moved_by_pokemon_type = list(move_name_dict[user_input].values())[0]
     used_moved_by_pokemon = move_name_dict[user_input]
+    opponant_pokemon_type = opponent_poke["type"][0]
+    type_advantage_number = type_advantages.type_advantages[used_moved_by_pokemon_type][opponant_pokemon_type]
 
     opponent_pokemon_defense = opponent_poke["defense"]
 
@@ -81,10 +88,10 @@ def my_pokemon_move_stat(choosen,opponent_poke):
     print()
     print(f"{choosen} used {used_moved_by_pokemon}")
     print()
-    print("Damage to",opponent_poke["pokemon_name"],damage)
+    print("Damage to",opponent_poke["pokemon_name"],damage*type_advantage_number)
     print()
 
-    return damage
+    return damage*type_advantage_number
         
 
 def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
@@ -98,37 +105,45 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
     increment = 0
     move_dict = {}
     opponent_pokemon_selected = {}
+    selected_pokemon_move_type = {}
 
     print()
     print(f"Opponant pokemon {random_pokemon_selected} Moves")
     for key,value in pokemon_move_set.items():
         increment = increment+1
-        # print(f"{key} {value}")
-        print(f"{increment} {key} ")
+        print(f"{increment} {key}")
 
         move_dict[increment] = value["power"]
-        # opponent_pokemon_selected[increment] = {key : value["power"]}
         opponent_pokemon_selected[increment] = {key : value["type"]}
-
-
+        selected_pokemon_move_type[increment] = value["type"]
 
     pokemon_battle_decision = (random.randint(1, 4))
 
     moveset_selection  = move_dict[pokemon_battle_decision]
+
     opponent_pokemon_selected_move = opponent_pokemon_selected[pokemon_battle_decision]
+    opponent_pokemon_selected_move_type = selected_pokemon_move_type[pokemon_battle_decision]
+    opponent_pokemon_type = list(player_pokemon["type"])[0]
+
+    print("*********Selected Pokemon Move Type**********",opponent_pokemon_selected_move_type) # got the move type now need the opponant pokemon type 
+    print("*********Oppopnant Pokemon  Type**********",opponent_pokemon_type)
+
+    # print("MOVES POKEMON",opponent_pokemon_selected_move)
+    type_advantage_number = type_advantages.type_advantages[opponent_pokemon_selected_move_type][opponent_pokemon_type] # change the variable name here opponat maens the npc pokemon and the player pokemon
+
+    print("******* TYPE ADVANTAGE POKEMON ********",type_advantage_number)
 
     player_pokemon_defense = player_pokemon["defense"]
 
     damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // player_pokemon_defense) // 50) + 2
 
     print()
-    # print("Opponant Pokemon",random_pokemon_selected,"used Attack", opponent_pokemon_selected_move, "does damage",damage)
     print("Opponant Pokemon",random_pokemon_selected,"used Attack", opponent_pokemon_selected_move)
-    # print("Wild",random_pokemon_selected["pokemon_name"], "used",opponent_pokemon_selected_move)
     print()
-    print("Damage to",player_pokemon["pokemon_name"],damage)
+    print("Damage to",player_pokemon["pokemon_name"],damage*type_advantage_number)
     print()
-    return damage
+    return damage*type_advantage_number
+
 
 
 def battle(choosen):
