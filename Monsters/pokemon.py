@@ -125,13 +125,7 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
     opponent_pokemon_selected_move_type = selected_pokemon_move_type[pokemon_battle_decision]
     opponent_pokemon_type = list(player_pokemon["type"])[0]
 
-    print("*********Selected Pokemon Move Type**********",opponent_pokemon_selected_move_type) # got the move type now need the opponant pokemon type 
-    print("*********Oppopnant Pokemon  Type**********",opponent_pokemon_type)
-
-    # print("MOVES POKEMON",opponent_pokemon_selected_move)
     type_advantage_number = type_advantages.type_advantages[opponent_pokemon_selected_move_type][opponent_pokemon_type] # change the variable name here opponat maens the npc pokemon and the player pokemon
-
-    print("******* TYPE ADVANTAGE POKEMON ********",type_advantage_number)
 
     player_pokemon_defense = player_pokemon["defense"]
 
@@ -181,22 +175,80 @@ def battle(choosen):
         pokemon_battle_decision = (random.randint(0, 1))
 
         if user_input == "1":
-            chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
-            opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
-            print()
-            print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
+
+            print("MY POKEMON SPEED",my_pokemon["speed"])
+            print("Opponnat POKEMON SPEED",opponent_poke["speed"])
+
+            # print("The Faster Pokemon speed is", max(my_pokemon["speed"],opponent_poke["speed"]))
+
+            if my_pokemon["speed"] > opponent_poke["speed"]:
+                print(my_pokemon["speed"])
+
+                chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
+                opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
+                print()
+                print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
 
 
-            if pokemon_battle_decision == 0:
-                print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
+                if pokemon_battle_decision == 0:
+                    print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
 
-                opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
+                    opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
 
-                chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
-                print(f'{choosen} Health: {chosen_pokemon_health}')
-        
+                    chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
+                    print(f'{choosen} Health: {chosen_pokemon_health}')
+            
+                else:
+                    print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
+
             else:
-                print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
+                print(opponent_poke["speed"])
+
+                if pokemon_battle_decision == 0:
+                    print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
+
+                    opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
+
+                    chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
+                    print(f'{choosen} Health: {chosen_pokemon_health}')
+
+                    chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
+                    opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
+                    print()
+                    print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
+            
+                else:
+                    print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
+
+                    chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
+                    opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
+                    print()
+                    print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
+
+
+
+
+            # chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
+            # opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
+            # print()
+            # print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
+
+
+            # if pokemon_battle_decision == 0:
+            #     print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
+
+            #     opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
+
+            #     chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
+            #     print(f'{choosen} Health: {chosen_pokemon_health}')
+        
+            # else:
+            #     print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
+
+
+
+
+
 
         if opponnat_pokemon_health <= 0:
             print()
