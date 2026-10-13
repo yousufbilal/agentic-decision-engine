@@ -144,23 +144,23 @@ def battle(choosen):
     pokedex_list = new_pokemon_stats.keys()
     random_pokemon_selected = random.choice(list(pokedex_list))
 
+    opponnat_pokemon_health = new_pokemon_stats[random_pokemon_selected]["health"]
+    chosen_pokemon_health = new_pokemon_stats[choosen]["health"]
+    my_pokemon = new_pokemon_stats[choosen]
+    opponent_poke = new_pokemon_stats[random_pokemon_selected]
+
     print()
     print("************  Pokemon battle started  **********")
     print()
-    print("Your chosen pokemon is:",new_pokemon_stats[choosen]["pokemon_name"], "Health:",new_pokemon_stats[choosen]["health"])
+    print("Your chosen pokemon is:",my_pokemon["pokemon_name"], "Health:",chosen_pokemon_health)
     print()
-    print("Your opponant pokemon is:",new_pokemon_stats[random_pokemon_selected]["pokemon_name"], "Health:", new_pokemon_stats[random_pokemon_selected]["health"])
+    print("Your opponant pokemon is:",opponent_poke["pokemon_name"], "Health:", opponnat_pokemon_health)
     print()
 
-    my_pokemon = new_pokemon_stats[choosen]
-    opponent_poke = new_pokemon_stats[random_pokemon_selected]
-    opponnat_pokemon_health = new_pokemon_stats[random_pokemon_selected]["health"]
-    chosen_pokemon_health = new_pokemon_stats[choosen]["health"]
 
     print("press 1 to battle\npress 2 to run")
     print()
     user_input = input()
-
 
     while not user_input == "1" and not user_input == "2":
         print("try again option not available")
@@ -176,33 +176,30 @@ def battle(choosen):
 
         if user_input == "1":
 
-            print("MY POKEMON SPEED",my_pokemon["speed"])
-            print("Opponnat POKEMON SPEED",opponent_poke["speed"])
-
-            # print("The Faster Pokemon speed is", max(my_pokemon["speed"],opponent_poke["speed"]))
-
             if my_pokemon["speed"] > opponent_poke["speed"]:
-                print(my_pokemon["speed"])
 
                 chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
                 opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
                 print()
                 print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
 
-
                 if pokemon_battle_decision == 0:
-                    print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
 
+                    if opponnat_pokemon_health < 0:
+                        print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
+                        break
+
+                    print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
+                
                     opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
 
                     chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
-                    print(f'{choosen} Health: {chosen_pokemon_health}')
+                    print(f'{choosen} Health: {chosen_pokemon_health}') # MY Pokemon health 
             
                 else:
                     print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
 
             else:
-                print(opponent_poke["speed"])
 
                 if pokemon_battle_decision == 0:
                     print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
@@ -211,6 +208,10 @@ def battle(choosen):
 
                     chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
                     print(f'{choosen} Health: {chosen_pokemon_health}')
+
+                    if chosen_pokemon_health < 0:
+                        print(f' *** battle ended {choosen} fainted ***')
+                        break
 
                     chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
                     opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
@@ -225,44 +226,19 @@ def battle(choosen):
                     print()
                     print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
 
+            if opponnat_pokemon_health <= 0:
+                print()
+                print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
+                print()
+                break
 
+            elif chosen_pokemon_health <= 0:
+                print()
+                print(f' *** battle ended {choosen} fainted ***')
+                print()
+                break
 
-
-            # chosen_pokemon_moves =  my_pokemon_move_stat(choosen,opponent_poke)
-            # opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
-            # print()
-            # print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
-
-
-            # if pokemon_battle_decision == 0:
-            #     print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
-
-            #     opponent_pokemon_moves = opponent_pokemon_move_stat(random_pokemon_selected,my_pokemon)
-
-            #     chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
-            #     print(f'{choosen} Health: {chosen_pokemon_health}')
-        
-            # else:
-            #     print("wild pokemon", opponent_poke["pokemon_name"], "did not attack")
-
-
-
-
-
-
-        if opponnat_pokemon_health <= 0:
-            print()
-            print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
-            print()
-            break
-
-        elif chosen_pokemon_health <= 0:
-            print()
-            print(f' *** battle ended {choosen} fainted ***')
-            print()
-            break
-
-        elif user_input == "2":
-            print("you ran away")
-            break
+            elif user_input == "2":
+                print("you ran away")
+                break
 
