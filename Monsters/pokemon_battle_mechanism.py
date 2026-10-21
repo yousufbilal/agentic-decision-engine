@@ -119,20 +119,7 @@ def my_current_pokemon(choosen):
     return first_pokemon, my_pokemon, chosen_pokemon_health
 
 
-def battle(choosen):
-    print("THIS IS THE BATTLE FUNC",choosen)
-
-    pokedex_list = new_pokemon_stats.keys()
-    random_pokemon_selected = random.choice(list(pokedex_list))
-    opponnat_pokemon_health = new_pokemon_stats[random_pokemon_selected]["health"]
-    opponent_poke = new_pokemon_stats[random_pokemon_selected]
-
-    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(choosen[0])
-
-    # first_pokemon = choosen[0]
-    # my_pokemon = new_pokemon_stats[first_pokemon]
-    # chosen_pokemon_health = new_pokemon_stats[first_pokemon]["health"]
-
+def battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,opponnat_pokemon_health):
 
     print()
     print("************  Pokemon battle started  **********")
@@ -154,7 +141,23 @@ def battle(choosen):
         if user_input == "1" or user_input == "2" or user_input == "3":
             break
 
+    return user_input
 
+
+def battle(choosen):
+    print("THIS IS THE BATTLE FUNC",choosen)
+
+    pokedex_list = new_pokemon_stats.keys()
+    random_pokemon_selected = random.choice(list(pokedex_list))
+    opponnat_pokemon_health = new_pokemon_stats[random_pokemon_selected]["health"]
+    opponent_poke = new_pokemon_stats[random_pokemon_selected]
+
+    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(choosen[0])
+
+
+    user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,opponnat_pokemon_health)
+    
+    
     while opponnat_pokemon_health > 0:
 
         pokemon_battle_decision = (random.randint(0, 1))
@@ -196,9 +199,19 @@ def battle(choosen):
 
                     if chosen_pokemon_health < 0:
                         print(f' *** battle ended {first_pokemon} fainted ***')
-                        choosen.pop(0)
+
+                        choosen.remove(first_pokemon)
                         print("remaining Pokemon",choosen)
-                        break
+
+                        if len(choosen) < 0:
+                            print("Whole parted fainted battle ended")
+                            break
+
+                        new_choosen_pokemon = party_switch(choosen)
+                        first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
+                        user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,opponnat_pokemon_health)
+
+
 
                     chosen_pokemon_moves =  my_pokemon_move_stat(first_pokemon,opponent_poke)
                     opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
@@ -213,17 +226,18 @@ def battle(choosen):
                     print()
                     print(f"{random_pokemon_selected} Health:{opponnat_pokemon_health}")
 
-            if opponnat_pokemon_health <= 0:
-                print()
-                print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
-                print()
-                break
 
-            elif chosen_pokemon_health <= 0:
+            if chosen_pokemon_health <= 0:
                 print()
                 print(f' *** battle ended {first_pokemon} fainted ***')
                 choosen.pop(1)
                 print("remaining Pokemon",choosen)
+                print()
+                break
+
+            if opponnat_pokemon_health <= 0:
+                print()
+                print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
                 print()
                 break
 
@@ -234,24 +248,6 @@ def battle(choosen):
         elif user_input == "3":
             new_choosen_pokemon = party_switch(choosen)
             first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
-
-            print()
-            print("************  Pokemon battle started  **********")
-            print()
-            print("Your chosen pokemon is:",my_pokemon["pokemon_name"], "Health:",chosen_pokemon_health)
-            print()
-            print("Your opponant pokemon is:",opponent_poke["pokemon_name"], "Health:", opponnat_pokemon_health)
-            print()
-
-
-            print("press 1 to battle\npress 2 to run \npress 3 to switch pokemon")
-            print()
-            user_input = input()
-
-            while not user_input == "1" and not user_input == "2" and not user_input == "3":
-                print("try again option not available")
-                print("press 1 to battle\npress 2 to run \npress 3 to switch pokemon")
-                user_input = input()
-                if user_input == "1" or user_input == "2" or user_input == "3":
-                    break
-
+            
+            user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,opponnat_pokemon_health)
+ 
