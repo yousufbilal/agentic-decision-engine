@@ -1,6 +1,7 @@
 from Pokedex import pokedex_dictionary
 from Pokedex import type_advantages
 from Monsters import pokemon_data_extraction
+import sys
 import random
 
 new_pokemon_stats = pokemon_data_extraction.pokemon_stat()
@@ -98,20 +99,40 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon):
     return damage*type_advantage_number
 
 
+def party_switch(choosen):
+    print("Current Pokemon Party\nchoose your new pokemon",choosen)
+
+    user_input = int(input())-1
+    new_choosen_pokemon = choosen[user_input]
+    # print("New Switched out Pokemon is",new_choosen_pokemon)
+
+    return new_choosen_pokemon
+    # sys.exit(0)
+
+
+def my_current_pokemon(choosen):
+    # print("CHOSEN",choosen)
+    first_pokemon = choosen
+    my_pokemon = new_pokemon_stats[first_pokemon]
+    chosen_pokemon_health = new_pokemon_stats[first_pokemon]["health"]
+
+    return first_pokemon, my_pokemon, chosen_pokemon_health
+
 
 def battle(choosen):
-
     print("THIS IS THE BATTLE FUNC",choosen)
-
-    first_pokemon = choosen[0]
 
     pokedex_list = new_pokemon_stats.keys()
     random_pokemon_selected = random.choice(list(pokedex_list))
-
     opponnat_pokemon_health = new_pokemon_stats[random_pokemon_selected]["health"]
-    chosen_pokemon_health = new_pokemon_stats[first_pokemon]["health"]
-    my_pokemon = new_pokemon_stats[first_pokemon]
     opponent_poke = new_pokemon_stats[random_pokemon_selected]
+
+    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(choosen[0])
+
+    # first_pokemon = choosen[0]
+    # my_pokemon = new_pokemon_stats[first_pokemon]
+    # chosen_pokemon_health = new_pokemon_stats[first_pokemon]["health"]
+
 
     print()
     print("************  Pokemon battle started  **********")
@@ -122,15 +143,15 @@ def battle(choosen):
     print()
 
 
-    print("press 1 to battle\npress 2 to run")
+    print("press 1 to battle\npress 2 to run \npress 3 to switch pokemon")
     print()
     user_input = input()
 
-    while not user_input == "1" and not user_input == "2":
+    while not user_input == "1" and not user_input == "2" and not user_input == "3":
         print("try again option not available")
-        print("press 1 to battle\npress 2 to run")
+        print("press 1 to battle\npress 2 to run \npress 3 to switch pokemon")
         user_input = input()
-        if user_input == "1" or user_input == "2":
+        if user_input == "1" or user_input == "2" or user_input == "3":
             break
 
 
@@ -203,11 +224,34 @@ def battle(choosen):
                 print(f' *** battle ended {first_pokemon} fainted ***')
                 choosen.pop(1)
                 print("remaining Pokemon",choosen)
-
                 print()
                 break
 
-            elif user_input == "2":
-                print("you ran away")
-                break
+        elif user_input == "2":
+            print("you ran away")
+            break
+
+        elif user_input == "3":
+            new_choosen_pokemon = party_switch(choosen)
+            first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
+
+            print()
+            print("************  Pokemon battle started  **********")
+            print()
+            print("Your chosen pokemon is:",my_pokemon["pokemon_name"], "Health:",chosen_pokemon_health)
+            print()
+            print("Your opponant pokemon is:",opponent_poke["pokemon_name"], "Health:", opponnat_pokemon_health)
+            print()
+
+
+            print("press 1 to battle\npress 2 to run \npress 3 to switch pokemon")
+            print()
+            user_input = input()
+
+            while not user_input == "1" and not user_input == "2" and not user_input == "3":
+                print("try again option not available")
+                print("press 1 to battle\npress 2 to run \npress 3 to switch pokemon")
+                user_input = input()
+                if user_input == "1" or user_input == "2" or user_input == "3":
+                    break
 
