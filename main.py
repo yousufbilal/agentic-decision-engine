@@ -20,9 +20,9 @@ def main():
 
         choosen = int(input())-1
 
-        if choosen < 0 or choosen > 9:
-            print("wrong option try again")
-            break
+        while choosen < 0 or choosen > 9:
+            print("wrong choice\ntry again")
+            choosen = int(input())-1
 
         pokemons = available_pokemon[choosen]
         print("Your Chosen Pokemon is",pokemons)
@@ -37,7 +37,6 @@ def main():
 
     # pokemon_battle_mechanism.battle(player_party)
     # pokemon_battle_mechanism_AI_battle.battle(player_party)
-
 
     # player_party = ["charmander,squirtle,bulbasaur"]
     AI_party = gemini_api.gemini_api_get_3_pokemon()
