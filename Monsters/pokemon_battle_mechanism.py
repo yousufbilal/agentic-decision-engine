@@ -212,7 +212,6 @@ def battle(choosen):
                         user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,opponnat_pokemon_health)
 
 
-
                     chosen_pokemon_moves =  my_pokemon_move_stat(first_pokemon,opponent_poke)
                     opponnat_pokemon_health = opponnat_pokemon_health - chosen_pokemon_moves
                     print()
