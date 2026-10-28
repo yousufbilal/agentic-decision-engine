@@ -171,33 +171,34 @@ def battle(player_party,AI_party,ai_pokemon_moves):
             if my_pokemon["speed"] > opponent_poke["speed"]:
                 print("Player pokemon is FASTER")
 
-                chosen_pokemon_moves =  my_pokemon_move_stat(first_pokemon,opponent_poke)
-                ai_pokemon_health = ai_pokemon_health - chosen_pokemon_moves
-                print()
-                print(f"{ai_selected_pokemon} Health:{ai_pokemon_health}")
+                if chosen_pokemon_health < 0:
+                    print(f' *** Pokemon {first_pokemon} fainted ***')
+
+                    player_party.remove(first_pokemon)
+                    print("remaining Pokemon",player_party)
+
+                    if len(player_party) < 1:
+                        print("Whole parted fainted battle ended")
+                        break
+
+                    new_choosen_pokemon = party_switch(player_party)
+                    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
+                    user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
+
+                    print("FIRST POKEMON", player_party)
 
                 chosen_pokemon_moves =  my_pokemon_move_stat(first_pokemon,opponent_poke)
                 ai_pokemon_health = ai_pokemon_health - chosen_pokemon_moves
                 print()
                 print(f"{ai_selected_pokemon} Health:{ai_pokemon_health}")
 
-                if ai_pokemon_health < 0:
-                    print(" *** battle ended opponant pokemon",opponent_poke["pokemon_name"], "fainted ***")
-                    break
+                ai_pokemon_move = opponent_poke["moves"]
 
-            #     print("wild pokemon",opponent_poke["pokemon_name"],"attacked")
-            
-            #     opponent_pokemon_moves = opponent_pokemon_move_stat(ai_selected_pokemon,my_pokemon,ai_pokemon_moves)
-            #     print("********** NEW POKEMON MOVE 1 **********",opponent_pokemon_moves)
+                ai_decision_after = gemini_api.gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,ai_pokemon_move, my_pokemon,chosen_pokemon_health,type_advantage_number)
+                opponent_pokemon_attack_damange = opponent_pokemon_move_stat(ai_selected_pokemon,my_pokemon,ai_decision_after)
+                chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_attack_damange
+                print(f'{first_pokemon} Health:{chosen_pokemon_health}')
 
-
-            #     chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_moves
-            #     print(f'{first_pokemon} Health: {chosen_pokemon_health}') # MY Pokemon health 
-            #     ai_decision_after = gemini_api.gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,my_pokemon,chosen_pokemon_health,pokedex_list,type_advantage_number)
-
-            #     print("********** NEW POKEMON MOVE 2 **********",ai_decision_after)
-
-            #     opponent_pokemon_moves = opponent_pokemon_move_stat(ai_selected_pokemon,my_pokemon,ai_decision_after)
             else:
 
                 print("AI pokemon is FASTER")
@@ -231,17 +232,6 @@ def battle(player_party,AI_party,ai_pokemon_moves):
                 ai_pokemon_health = ai_pokemon_health - chosen_pokemon_moves
                 print()
                 print(f"{ai_selected_pokemon} Health:{ai_pokemon_health}")
-
-                # return ai_selected_pokemon,ai_pokemon_health,my_pokemon,chosen_pokemon_health,pokedex_list,type_advantage_number
-
-                # ai_decision_after = gemini_api.gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,my_pokemon,chosen_pokemon_health,pokedex_list,type_advantage_number)
-
-                # opponent_pokemon_attack_damange = opponent_pokemon_move_stat(ai_selected_pokemon,my_pokemon,ai_decision_after)
-                # chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_attack_damange
-                # print(f'{first_pokemon} Health:{chosen_pokemon_health}')
-
-                # ai_decision_after = gemini_api.gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,my_pokemon,chosen_pokemon_health,pokedex_list,type_advantage_number)
-                # opponent_pokemon_move_stat(ai_selected_pokemon,my_pokemon,ai_decision_after)
 
         elif user_input == "2":
             print("you ran away")
