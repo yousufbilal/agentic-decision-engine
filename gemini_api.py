@@ -118,3 +118,45 @@ def gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,ai_pokemon_move, my_p
     llm_response = data["candidates"][0]["content"]["parts"][0]["text"]
 
     return llm_response
+
+
+def gemini_battle_commentary(battle_commentary):
+
+    pokdex_data = pokedex_dictionary.pokedex
+    type_advantages_game = type_advantages.type_advantages
+
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+
+    headers = {
+        "x-goog-api-key": GEMINI_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    body = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": f'''You are a pokemon battle commentator. Describe what just happened in this turn.
+
+                                The opponent's pokemon: {battle_commentary["ai_selected_pokemon"]}, 
+                                The opponent's pokemon health: {battle_commentary["ai_pokemon_health"]}.
+                                The opponent used the move: {battle_commentary["ai_pokemon_move"]}.
+
+                                The player's pokemon: {battle_commentary["my_pokemon"]["pokemon_name"]}, 
+                                The player's pokemon health: {battle_commentary["chosen_pokemon_health"]}.
+                                The player's used move: {battle_commentary["chosen_pokemon_moves"]}.
+
+                                The type advantage multiplier of the opponent's move was {battle_commentary["type_advantage_number"]}.
+                                Write two sentences of exciting commentary, mention the only the move used by both pokemons do not invent new moves'''}]
+            }
+        ]
+    }
+
+    response = requests.post(url,headers=headers,json=body)
+
+    data = response.json()
+    llm_response = data["candidates"][0]["content"]["parts"][0]["text"]
+
+    return llm_response
