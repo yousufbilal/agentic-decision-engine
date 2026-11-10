@@ -26,10 +26,8 @@ def gemini_api_get_3_pokemon():
         "contents": [
             {
                 "parts": [
-
-                    {"text": f'{pokdex_data} {type_advantages_game} reply with only the three names, nothing before or after them for the pokemon battle against the player'}
-                    
-
+                    {"text": f'''{pokdex_data} {type_advantages_game} reply with only the three best pokemon from the data names that you will choose to battle the player with,
+                    give the selected pokemon in string no spaces before or after'''}
                 ]
             }
         ]
@@ -150,6 +148,39 @@ def gemini_battle_commentary(battle_commentary):
 
                                 The type advantage multiplier of the opponent's move was {battle_commentary["type_advantage_number"]}.
                                 Write two sentences of exciting commentary, mention the only the move used by both pokemons do not invent new moves'''}]
+            }
+        ]
+    }
+
+    response = requests.post(url,headers=headers,json=body)
+
+    data = response.json()
+    llm_response = data["candidates"][0]["content"]["parts"][0]["text"]
+
+    return llm_response
+
+
+def ai_pokemon_team_switch(ai_full_party,player_first_pokemon):
+
+    pokdex_data = pokedex_dictionary.pokedex
+    type_advantages_game = type_advantages.type_advantages
+
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+
+    headers = {
+        "x-goog-api-key": GEMINI_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    body = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": f''' You are a pokemon trainer in a battle. The player's current pokemon is {player_first_pokemon}. 
+                    Your remaining pokemon are {ai_full_party}. Choose the one from your remaining pokemon that is best against the player's pokemon. 
+                    Reply with only that pokemon's name in lowercase, and nothing else. '''}]
             }
         ]
     }

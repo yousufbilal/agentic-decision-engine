@@ -1,6 +1,6 @@
 from Pokedex import pokedex_dictionary
 from Pokedex import type_advantages
-from Monsters import pokemon_data_extraction
+from pokemon_battle_mechanism import pokemon_data_extraction
 
 new_pokemon_stats = pokemon_data_extraction.pokemon_stat()
 

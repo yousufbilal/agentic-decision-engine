@@ -1,67 +1,28 @@
 # from Pokedex import pokedex_dictionary
 from Pokedex import type_advantages
-from Monsters import pokemon_data_extraction
+from pokemon_battle_mechanism import pokemon_data_extraction
 from moves import pokemon_moves
+from switch_party import switch_party
+from battle import battle_sequence
 import gemini_api
 
 new_pokemon_stats = pokemon_data_extraction.pokemon_stat()
 
-def party_switch(choosen):
-    print()
-    print("--------------------------------------------------")
-    print("Your party:", choosen)
-    print("Choose your next pokemon (enter its number in the party):")
-    user_input = int(input())-1
-    new_choosen_pokemon = choosen[user_input]
-
-    return new_choosen_pokemon
-
-def my_current_pokemon(choosen):
-    first_pokemon = choosen
-    my_pokemon = new_pokemon_stats[first_pokemon]
-    chosen_pokemon_health = new_pokemon_stats[first_pokemon]["health"]
-
-    return first_pokemon, my_pokemon, chosen_pokemon_health
-
-
-def battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,opponnat_pokemon_health):
-    print()
-    print("==================================================")
-    print("              POKEMON BATTLE STARTED")
-    print("==================================================")
-    print(f" You:      {my_pokemon['pokemon_name']}   HP: {chosen_pokemon_health}")
-    print(f" Opponent: {opponent_poke['pokemon_name']}   HP: {opponnat_pokemon_health}")
-    print("--------------------------------------------------")
-    print(" [1] Battle    [2] Run    [3] Switch Pokemon")
-    print()
-    user_input = input()
-
-    while not user_input == "1" and not user_input == "2" and not user_input == "3":
-        print("Invalid option, please try again.")
-        print(" [1] Battle    [2] Run    [3] Switch Pokemon")
-        user_input = input()
-        if user_input == "1" or user_input == "2" or user_input == "3":
-            break
-
-    return user_input
-
-
-def battle(player_party,AI_party):
+def battle(player_party,ai_full_party):
 
     battle_commentary = {}
 
     type_advantage_number = type_advantages.type_advantages
 
-    ai_full_party = AI_party.split(",")
-
     ai_selected_pokemon = ai_full_party[0]
+    first_ai_pokemon = ai_full_party[0]
 
     ai_pokemon_health = new_pokemon_stats[ai_selected_pokemon]["health"]
     opponent_poke = new_pokemon_stats[ai_selected_pokemon]
 
-    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(player_party[0])
+    first_pokemon , my_pokemon, chosen_pokemon_health = battle_sequence.my_current_pokemon(player_party[0])
 
-    user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
+    user_input = battle_sequence.battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
 
     while ai_pokemon_health > 0:
 
@@ -81,9 +42,9 @@ def battle(player_party,AI_party):
                         print("All your pokemon fainted. Battle over.")
                         break
 
-                    new_choosen_pokemon = party_switch(player_party)
-                    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
-                    user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
+                    new_choosen_pokemon = switch_party.party_switch(player_party)
+                    first_pokemon , my_pokemon, chosen_pokemon_health = battle_sequence.my_current_pokemon(new_choosen_pokemon)
+                    user_input = battle_sequence.battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
 
                     print(f"Go, {first_pokemon}!")
 
@@ -116,6 +77,8 @@ def battle(player_party,AI_party):
                 print("--------------------------------------------------")
 
             else:
+
+                # The Normal switch 
                 ai_pokemon_move = opponent_poke["moves"]
 
                 ai_decision_after = gemini_api.gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,ai_pokemon_move, my_pokemon,chosen_pokemon_health,type_advantage_number)
@@ -135,9 +98,9 @@ def battle(player_party,AI_party):
                         print("All your pokemon fainted. Battle over.")
                         break
 
-                    new_choosen_pokemon = party_switch(player_party)
-                    first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
-                    user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
+                    new_choosen_pokemon = switch_party.party_switch(player_party)
+                    first_pokemon , my_pokemon, chosen_pokemon_health = battle_sequence.my_current_pokemon(new_choosen_pokemon)
+                    user_input = battle_sequence.battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
 
                     print(f"Go, {first_pokemon}!")
 
@@ -146,6 +109,34 @@ def battle(player_party,AI_party):
                 ai_pokemon_health = ai_pokemon_health - chosen_pokemon_move_damange
                 print()
                 print(f"{ai_selected_pokemon} HP: {ai_pokemon_health}")
+
+
+
+
+                # The AI switch 
+                if ai_pokemon_health < 0:
+                    ai_full_party.remove(first_ai_pokemon)
+                    
+                    if len(ai_full_party) < 1:
+                        print("*** All AI pokemon Party Fainted Battle over. ****")
+                        break
+
+                    ai_new_choosen_pokemon = switch_party.ai_party_switch(ai_full_party,first_pokemon)
+                    print(f"Go, {ai_new_choosen_pokemon}!")
+
+                    ai_pokemon_move = ai_new_choosen_pokemon["moves"]
+                    print("***POKEMON MOVE*****",ai_pokemon_move)
+
+
+                    # ai_decision_after = gemini_api.gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,ai_pokemon_move, my_pokemon,chosen_pokemon_health,type_advantage_number)
+                    # opponent_pokemon_attack_damange, ai_selected_move_name = pokemon_moves.opponent_pokemon_move_stat(ai_new_choosen_pokemon,my_pokemon,ai_decision_after)
+
+
+                    # user_input = battle_sequence(my_pokemon,chosen_pokemon_health,ai_new_choosen_pokemon,ai_pokemon_health)
+                    # battle_sequence(my_pokemon,chosen_pokemon_health,ai_new_choosen_pokemon,ai_pokemon_health)
+                    # opponent_pokemon_attack_damange, ai_selected_move_name = pokemon_moves.opponent_pokemon_move_stat(ai_new_choosen_pokemon,my_pokemon,ai_decision_after)
+                    # chosen_pokemon_health = chosen_pokemon_health - opponent_pokemon_attack_damange
+                    # print(f'{first_pokemon} HP: {chosen_pokemon_health}')
 
                 battle_commentary = {
                     "ai_selected_pokemon": ai_selected_pokemon,
@@ -167,6 +158,6 @@ def battle(player_party,AI_party):
             break
 
         elif user_input == "3":
-            new_choosen_pokemon = party_switch(player_party)
-            first_pokemon , my_pokemon, chosen_pokemon_health = my_current_pokemon(new_choosen_pokemon)
-            user_input = battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)
+            new_choosen_pokemon = switch_party.party_switch(player_party)
+            first_pokemon , my_pokemon, chosen_pokemon_health = battle_sequence.my_current_pokemon(new_choosen_pokemon)
+            user_input = battle_sequence.battle_sequence(my_pokemon,chosen_pokemon_health,opponent_poke,ai_pokemon_health)

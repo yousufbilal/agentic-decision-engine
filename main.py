@@ -1,6 +1,6 @@
-from Monsters import pokemon_battle_mechanism
-from Monsters import pokemon_battle_mechanism_AI_battle
-from Monsters import pokemon_data_extraction
+from pokemon_battle_mechanism import pokemon_battle_mechanism
+from pokemon_battle_mechanism import pokemon_battle_mechanism_AI_battle
+from pokemon_battle_mechanism import pokemon_data_extraction
 import gemini_api
 
 def main():
@@ -38,9 +38,13 @@ def main():
 
         print("Your party:", player_party)
 
-    AI_party = gemini_api.gemini_api_get_3_pokemon()
-    ai_pokemon_moves=  gemini_api.gemini_api_pokemon_moves(AI_party,player_party)
+    ai_party = gemini_api.gemini_api_get_3_pokemon()
 
-    pokemon_battle_mechanism_AI_battle.battle(player_party,AI_party)
+    ai_full_party = ai_party.split(",")
+
+    print("AI PARTY: ",ai_full_party)
+    print("Player PARTY:",player_party)
+
+    pokemon_battle_mechanism_AI_battle.battle(player_party,ai_full_party)
 
 main()
