@@ -48,7 +48,7 @@ def battle(player_party,ai_full_party):
             print(f'{player_current_pokemon} HP: {player_pokemon_health}')
 
             # if player pokemon faints after attack from enemy 
-            if player_pokemon_health < 0:
+            if player_pokemon_health <= 0:
                 print()
                 print(f'*** {player_current_pokemon} fainted ***')
 
@@ -73,8 +73,10 @@ def battle(player_party,ai_full_party):
             print()
             print(f"{ai_selected_pokemon} HP: {ai_pokemon_health}")
 
+            ai_commentary(ai_selected_pokemon, ai_pokemon_health, ai_selected_move_name, my_pokemon, player_pokemon_health, type_advantage_number, used_moved_by_pokemon)
+
             # if ai pokemon faints after attack from player 
-            if ai_pokemon_health < 0:
+            if ai_pokemon_health <= 0:
                 ai_full_party.remove(ai_selected_pokemon)
 
                 # Condition when the AI entire party faints 
@@ -88,8 +90,8 @@ def battle(player_party,ai_full_party):
                 ai_pokemon_health = new_pokemon_stats[ai_new_choosen_pokemon]["health"]
 
                 user_input = battle_sequence.battle_sequence(my_pokemon,player_pokemon_health,opponent_poke,ai_pokemon_health)
-                ai_commentary(ai_selected_pokemon, ai_pokemon_health, ai_selected_move_name, my_pokemon, player_pokemon_health, type_advantage_number, used_moved_by_pokemon)
                 ai_selected_pokemon = ai_new_choosen_pokemon
+                # ai_commentary(ai_selected_pokemon, ai_pokemon_health, ai_selected_move_name, my_pokemon, player_pokemon_health, type_advantage_number, used_moved_by_pokemon)
 
         elif user_input == "2":
             print("You ran away safely.")
