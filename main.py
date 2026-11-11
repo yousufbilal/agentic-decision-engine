@@ -9,6 +9,7 @@ def main():
     num = 0
     player_party = []
     available_pokemon = []
+    ai_party_list = []
     print("==================================================")
     print("                 CHOOSE YOUR PARTY")
     print("==================================================")
@@ -42,9 +43,13 @@ def main():
 
     ai_full_party = ai_party.split(",")
 
-    print("AI PARTY: ",ai_full_party)
+    for x in ai_full_party:
+        remove_spaces = x.replace(" ", "")
+        ai_party_list.append(remove_spaces)
+        
     print("Player PARTY:",player_party)
+    print("AI PARTY: ",ai_party_list)
 
-    pokemon_battle_mechanism_AI_battle.battle(player_party,ai_full_party)
+    pokemon_battle_mechanism_AI_battle.battle(player_party,ai_party_list)
 
 main()
