@@ -1,10 +1,10 @@
 from pokemon_battle_mechanism import pokemon_battle_mechanism
 from pokemon_battle_mechanism import pokemon_battle_mechanism_AI_battle
-from pokemon_battle_mechanism import pokemon_data_extraction
+from pokedex_data_extraction import pokemon_stat
 import gemini_api
 
 def main():
-    all_pokemon = pokemon_data_extraction.pokemon_stat()
+    all_pokemon = pokemon_stat.pokemon_stat()
 
     num = 0
     player_party = []

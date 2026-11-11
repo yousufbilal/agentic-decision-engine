@@ -1,10 +1,10 @@
 from Pokedex import pokedex_dictionary
 from Pokedex import type_advantages
-from pokemon_battle_mechanism import pokemon_data_extraction
-import sys
+from pokedex_data_extraction import pokemon_stat
+
 import random
 
-new_pokemon_stats = pokemon_data_extraction.pokemon_stat()
+new_pokemon_stats = pokemon_stat.pokemon_stat()
 
 def my_pokemon_move_stat(choosen,opponent_poke):
 

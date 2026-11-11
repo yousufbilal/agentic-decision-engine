@@ -1,8 +1,8 @@
 from Pokedex import pokedex_dictionary
 from Pokedex import type_advantages
-from pokemon_battle_mechanism import pokemon_data_extraction
+from pokedex_data_extraction import pokemon_stat
 
-new_pokemon_stats = pokemon_data_extraction.pokemon_stat()
+new_pokemon_stats = pokemon_stat.pokemon_stat()
 
 def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon,ai_pokemon_move):
 

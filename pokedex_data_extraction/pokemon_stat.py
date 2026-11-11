@@ -40,6 +40,3 @@ def pokemon_stat():
             }
 
     return new_pokedex
-
-# new_pokemon_stats = pokemon_stat()
-# print(new_pokemon_stats)
