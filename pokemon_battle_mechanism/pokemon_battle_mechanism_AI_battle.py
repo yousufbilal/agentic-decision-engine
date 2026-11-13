@@ -95,7 +95,7 @@ def battle(player_party,ai_full_party):
                 # Condition when the AI entire party faints 
                 if len(ai_full_party) < 1:
                     print("*** All AI pokemon Party Fainted Battle over. ****")
-                    result = "loss"
+                    result = "win"
                     battle_result_dict = {
                         "player_pokemon" : player_current_pokemon,
                         "ai_pokemon" : opponent_poke["pokemon_name"],
