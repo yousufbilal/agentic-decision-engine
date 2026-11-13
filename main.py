@@ -1,6 +1,7 @@
 from pokemon_battle_mechanism import pokemon_battle_mechanism
 from pokemon_battle_mechanism import pokemon_battle_mechanism_AI_battle
 from pokedex_data_extraction import pokemon_stat
+import sqlite3_practice
 import gemini_api
 
 def main():

@@ -3,6 +3,7 @@ from moves import pokemon_moves
 from switch_party import switch_party
 from battle import battle_sequence
 from pokedex_data_extraction import pokemon_stat
+import sqlite3_practice
 import gemini_api
 
 new_pokemon_stats = pokemon_stat.pokemon_stat()
@@ -31,6 +32,9 @@ def battle(player_party,ai_full_party):
     opponent_poke = new_pokemon_stats[ai_selected_pokemon]
     ai_pokemon_health = new_pokemon_stats[ai_selected_pokemon]["health"]
     player_current_pokemon , my_pokemon, player_pokemon_health = battle_sequence.my_current_pokemon(player_party[0])
+    result = ""
+    battle_result_dict = {}
+
     
     user_input = battle_sequence.battle_sequence(my_pokemon,player_pokemon_health,opponent_poke,ai_pokemon_health)    
 
@@ -58,6 +62,15 @@ def battle(player_party,ai_full_party):
                 # Condition when the player entire party faints 
                 if len(player_party) < 1:
                     print("All your pokemon fainted. Battle over.")
+                    result = "loss"
+                    print("The result of the battle",result)
+                    battle_result_dict = {
+                        "player_pokemon" : player_current_pokemon,
+                        "ai_pokemon" : opponent_poke["pokemon_name"],
+                        "result" : result
+                        }
+                    sqlite3_practice.make_db(battle_result_dict)
+                    # return battle_result_dict
                     break
 
                 # if player has some pokemon they can switch to new 
@@ -82,6 +95,15 @@ def battle(player_party,ai_full_party):
                 # Condition when the AI entire party faints 
                 if len(ai_full_party) < 1:
                     print("*** All AI pokemon Party Fainted Battle over. ****")
+                    result = "loss"
+                    battle_result_dict = {
+                        "player_pokemon" : player_current_pokemon,
+                        "ai_pokemon" : opponent_poke["pokemon_name"],
+                        "result" : result
+                        }
+                    print("The result of the battle",result)
+                    sqlite3_practice.make_db(battle_result_dict)
+                    # return battle_result_dict
                     break
 
                 # if AI has some pokemon they can switch to new 
@@ -91,7 +113,7 @@ def battle(player_party,ai_full_party):
 
                 user_input = battle_sequence.battle_sequence(my_pokemon,player_pokemon_health,opponent_poke,ai_pokemon_health)
                 ai_selected_pokemon = ai_new_choosen_pokemon
-                # ai_commentary(ai_selected_pokemon, ai_pokemon_health, ai_selected_move_name, my_pokemon, player_pokemon_health, type_advantage_number, used_moved_by_pokemon)
+
 
         elif user_input == "2":
             print("You ran away safely.")
@@ -101,3 +123,5 @@ def battle(player_party,ai_full_party):
             new_choosen_pokemon = switch_party.party_switch(player_party)
             player_current_pokemon , my_pokemon, player_pokemon_health = battle_sequence.my_current_pokemon(new_choosen_pokemon)
             user_input = battle_sequence.battle_sequence(my_pokemon,player_pokemon_health,opponent_poke,ai_pokemon_health)
+
+    # return battle_result_dict
