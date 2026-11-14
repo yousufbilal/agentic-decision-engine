@@ -48,7 +48,7 @@ def main():
         remove_spaces = x.replace(" ", "")
         ai_party_list.append(remove_spaces)
         
-    print("Player PARTY:",player_party)
+    # print("Player PARTY:",player_party)
     print("AI PARTY: ",ai_party_list)
 
     pokemon_battle_mechanism_AI_battle.battle(player_party,ai_party_list)

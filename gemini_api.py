@@ -5,7 +5,6 @@ import json
 from Pokedex import pokedex_dictionary
 from Pokedex import type_advantages
 
-
 load_dotenv()
 
 def gemini_api_get_3_pokemon():
@@ -120,9 +119,6 @@ def gemini_api_turns(ai_selected_pokemon,ai_pokemon_health,ai_pokemon_move, my_p
 
 def gemini_battle_commentary(battle_commentary):
 
-    pokdex_data = pokedex_dictionary.pokedex
-    type_advantages_game = type_advantages.type_advantages
-
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 
     url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
@@ -160,10 +156,43 @@ def gemini_battle_commentary(battle_commentary):
     return llm_response
 
 
-def ai_pokemon_team_switch(ai_full_party,player_first_pokemon):
+def gemini_battle_background(pre_battle_info):
 
-    pokdex_data = pokedex_dictionary.pokedex
-    type_advantages_game = type_advantages.type_advantages
+    GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+
+    url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+
+    headers = {
+        "x-goog-api-key": GEMINI_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    body = {
+        "contents": [
+            {
+                "parts": [
+                    {"text": f'''You are an exciting battle announcer for a pokemon game. 
+                    Here is the saved record of past battles between the player and the rival: {pre_battle_info}
+                    Before the battle begins, write a short, exciting summary of this history in three sentences. 
+                    Include the wins and losses and the pokemon involved. If the record is empty, announce that this is their first ever battle. 
+                    Only use pokemon and results that appear in the record above. 
+                    provide a total score of wins and loses as well.
+                    Do not invent anything.'''}]
+            }
+        ]
+    }
+
+    response = requests.post(url,headers=headers,json=body)
+
+    data = response.json()
+    llm_response = data["candidates"][0]["content"]["parts"][0]["text"]
+
+    return llm_response
+
+
+
+
+def ai_pokemon_team_switch(ai_full_party,player_first_pokemon):
 
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 

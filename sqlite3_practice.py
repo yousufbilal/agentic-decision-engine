@@ -15,6 +15,17 @@ def make_db(battle_result_dict):
         ),
     )
     connection.commit()
+    # cursor.execute("""SELECT * FROM poke_table""")
+    # rows = cursor.fetchall()
+    
+    # print(rows)
+
+
+def call_db():
+
     cursor.execute("""SELECT * FROM poke_table""")
     rows = cursor.fetchall()
-    print(rows)
+    # print(rows)
+    return rows
+    
+

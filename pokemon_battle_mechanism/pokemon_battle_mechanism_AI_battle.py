@@ -25,6 +25,13 @@ def ai_commentary(ai_selected_pokemon, ai_pokemon_health, ai_selected_move_name,
     print("Commentary:",ai_selected_pokemon_move)
     print("--------------------------------------------------")
 
+def battle_background():
+    database_enteries = sqlite3_practice.call_db()
+    pre_battle_info = gemini_api.gemini_battle_background(database_enteries)
+    print("\n========== BATTLE BACKGROUND ==========")
+    print(pre_battle_info)
+    print("=======================================\n")
+
 
 def battle(player_party,ai_full_party):
 
@@ -34,13 +41,22 @@ def battle(player_party,ai_full_party):
     player_current_pokemon , my_pokemon, player_pokemon_health = battle_sequence.my_current_pokemon(player_party[0])
     result = ""
     battle_result_dict = {}
+    battle_background_dict = {}
 
+    battle_background()
     
-    user_input = battle_sequence.battle_sequence(my_pokemon,player_pokemon_health,opponent_poke,ai_pokemon_health)    
+    user_input = battle_sequence.battle_sequence(my_pokemon,player_pokemon_health,opponent_poke,ai_pokemon_health)
+
+
+
 
     while ai_pokemon_health > 0:
 
         if user_input == "1":
+
+            # print(database_enteries)
+            # pre_battle_info = gemini_api.gemini_battle_background(database_enteries)   
+            # print(f'****{pre_battle_info}****')
 
             print("AI attacks first")
 
