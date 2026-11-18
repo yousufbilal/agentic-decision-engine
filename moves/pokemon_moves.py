@@ -32,8 +32,6 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon,ai_pokemon
 
     ai_selected_move = new_dict[ai_pokemon_move]
 
-    # print("******** ai selected move ************",ai_selected_move)
-
     ai_selected_move_power = ai_selected_move[0]
     ai_selected_move_type = ai_selected_move[1]
     ai_selected_move_name = ai_selected_move[2]
@@ -44,7 +42,9 @@ def opponent_pokemon_move_stat(random_pokemon_selected,player_pokemon,ai_pokemon
 
     type_advantage_number = type_advantages.type_advantages[ai_selected_move_type][opponent_pokemon_type] # change the variable name here opponat maens the npc pokemon and the player pokemon
 
-    damage = ((((2 * level) // 5 + 2) * ai_selected_move_power * base_atk_stat // player_pokemon_defense) // 50) + 2
+    # damage = ((((2 * level) // 5 + 2) * ai_selected_move_power * base_atk_stat // player_pokemon_defense) // 50) + 2
+
+    damage = move_damage_formula(level, ai_selected_move_power, base_atk_stat, player_pokemon_defense)
 
     print()
     print(f'{random_pokemon_selected} used {ai_selected_move_name}!')
@@ -88,10 +88,19 @@ def my_pokemon_move_stat(choosen,opponent_poke):
 
     opponent_pokemon_defense = opponent_poke["defense"]
 
-    damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // opponent_pokemon_defense) // 50) + 2
+    # damage = ((((2 * level) // 5 + 2) * moveset_selection * base_atk_stat // opponent_pokemon_defense) // 50) + 2
+
+    damage = move_damage_formula(level, moveset_selection, base_atk_stat, opponent_pokemon_defense)
 
     print()
     print(f"{choosen} used {list(used_moved_by_pokemon.keys())[0]}!")
     print(f"It dealt {damage*type_advantage_number} damage to {opponent_poke['pokemon_name']}.")
 
     return damage*type_advantage_number , used_moved_by_pokemon
+
+
+def move_damage_formula(level, selected_move, base_atk_stat, pokemon_defense):
+
+    damage = ((((2 * level) // 5 + 2) * selected_move * base_atk_stat // pokemon_defense) // 50) + 2
+
+    return damage

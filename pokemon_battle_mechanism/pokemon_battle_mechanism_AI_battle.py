@@ -3,7 +3,7 @@ from moves import pokemon_moves
 from switch_party import switch_party
 from battle import battle_sequence
 from pokedex_data_extraction import pokemon_stat
-import sqlite3_practice
+import sqlite3_battle_db
 import gemini_api
 
 new_pokemon_stats = pokemon_stat.pokemon_stat()
@@ -26,7 +26,7 @@ def ai_commentary(ai_selected_pokemon, ai_pokemon_health, ai_selected_move_name,
     print("--------------------------------------------------")
 
 def battle_background():
-    database_enteries = sqlite3_practice.call_db()
+    database_enteries = sqlite3_battle_db.call_db()
     pre_battle_info = gemini_api.gemini_battle_background(database_enteries)
     print("\n========== BATTLE BACKGROUND ==========")
     print(pre_battle_info)
@@ -85,7 +85,7 @@ def battle(player_party,ai_full_party):
                         "ai_pokemon" : opponent_poke["pokemon_name"],
                         "result" : result
                         }
-                    sqlite3_practice.make_db(battle_result_dict)
+                    sqlite3_battle_db.make_db(battle_result_dict)
                     # return battle_result_dict
                     break
 
@@ -118,7 +118,7 @@ def battle(player_party,ai_full_party):
                         "result" : result
                         }
                     print("The result of the battle",result)
-                    sqlite3_practice.make_db(battle_result_dict)
+                    sqlite3_battle_db.make_db(battle_result_dict)
                     # return battle_result_dict
                     break
 
